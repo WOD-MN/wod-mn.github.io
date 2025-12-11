@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<!-- Created By Saiman Pokhrel -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saiman Pokhrel</title>
+    <title>Saiman Pokhrel | IoT & Robotics</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -12,15 +11,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
-
 </head>
 <body>
+    <canvas id="particle-canvas"></canvas>
+
     <div class="scroll-up-btn">
         <i class="fas fa-angle-up"></i>
     </div>
+
     <nav class="navbar">
         <div class="max-width">
-            <div class="logo"><a href="#">Portfo<span>lio.</span></a></div>
+            <div class="logo"><a href="#">SP<span>.</span></a></div>
             <ul class="menu">
                 <li><a href="#home" class="menu-btn">Home</a></li>
                 <li><a href="#about" class="menu-btn">About</a></li>
@@ -34,103 +35,104 @@
         </div>
     </nav>
 
-    <!-- home section start -->
     <section class="home" id="home">
         <div class="max-width">
-            <div class="home-content">
-                <div class="text-1">Hello, my name is</div>
+            <div class="home-content reveal">
+                <div class="text-1">Hello, I'm</div>
                 <div class="text-2">Saiman Pokhrel</div>
                 <div class="text-3">And I'm a <span class="typing"></span></div>
-                <a href="#">Hire me</a>
+                <div class="buttons">
+                    <a href="#contact" class="btn-primary">Hire me</a>
+                    <a href="#about" class="btn-secondary">Explore</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- about section start -->
     <section class="about" id="about">
         <div class="max-width">
-            <h2 class="title">About me</h2>
+            <h2 class="title reveal">About Me</h2>
             <div class="about-content">
-                <div class="column left">
-                    <img src="saiman.jpg" alt="">
+                <div class="column left reveal">
+                    <div class="img-card">
+                        <img src="saiman.jpg" alt="Saiman Pokhrel">
+                    </div>
                 </div>
-                <div class="column right">
+                <div class="column right reveal">
                     <div class="text">I'm Saiman and I'm a <span class="typing-2"></span></div>
                     <p>I am a computer engineer passionate about IoT, robotics, and off-grid communication systems. My expertise lies in C, C++, Python, and integrating these skills into innovative projects, particularly in disaster management and remote monitoring solutions.</p>
-                    <a href="#">Download CV</a>
+                    <a href="#" class="btn-primary">Download CV</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- services section start -->
     <section class="services" id="services">
         <div class="max-width">
-            <h2 class="title">My services</h2>
+            <h2 class="title reveal">My Services</h2>
             <div class="serv-content">
-                <div class="card">
+                <div class="card reveal">
                     <div class="box">
-                        <i class="fas fa-paint-brush"></i>
+                        <div class="icon-box"><i class="fas fa-paint-brush"></i></div>
                         <div class="text">Web Design</div>
-                        <p>I design responsive and engaging websites with a focus on user experience and visual appeal.</p>
+                        <p>Designing responsive, engaging websites focused on user experience.</p>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card reveal">
                     <div class="box">
-                        <i class="fas fa-chart-line"></i>
+                        <div class="icon-box"><i class="fas fa-chart-line"></i></div>
                         <div class="text">IoT Solutions</div>
-                        <p>I build IoT systems focused on remote monitoring, automation, and real-time data analysis using LoRa and other communication technologies.</p>
+                        <p>Remote monitoring, automation, and real-time data analysis using LoRa.</p>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card reveal">
                     <div class="box">
-                        <i class="fas fa-code"></i>
+                        <div class="icon-box"><i class="fas fa-microchip"></i></div>
                         <div class="text">PCB Design</div>
-                        <p>I create custom PCBs for various embedded systems and IoT devices to optimize performance and efficiency.</p>
+                        <p>Custom PCBs for embedded systems and IoT devices to optimize efficiency.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- skills section start -->
     <section class="skills" id="skills">
         <div class="max-width">
-            <h2 class="title">My skills</h2>
+            <h2 class="title reveal">Technical Skills</h2>
             <div class="skills-content">
-                <div class="column left">
+                <div class="column left reveal">
                     <div class="text">My creative skills & experiences.</div>
-                    <p>I specialize in C, C++, Python, and embedded system design for IoT applications. With extensive experience in PCB design, I work on projects ranging from remote communication systems to robotics. My knowledge also includes off-grid communication, enabling effective solutions in isolated areas.</p>
-                    <a href="#">Read more</a>
+                    <p>Specializing in C, C++, Python, and embedded system design for IoT applications. Experience in PCB design, robotics, and off-grid communication systems.</p>
+                    <a href="#" class="btn-primary">Read more</a>
                 </div>
-                <div class="column right">
+                <div class="column right reveal">
                     <div class="bars">
                         <div class="info">
-                            <span>C & CPP</span>
+                            <span>C & C++</span>
                             <span>90%</span>
                         </div>
-                        <div class="line html"></div>
+                        <div class="line c"></div>
                     </div>
                     <div class="bars">
                         <div class="info">
-                            <span>HTML & CSS</span>
-                            <span>60%</span>
+                            <span>IoT / Embedded</span>
+                            <span>85%</span>
                         </div>
-                        <div class="line css"></div>
+                        <div class="line iot"></div>
                     </div>
                     <div class="bars">
                         <div class="info">
-                            <span>Easy EDA</span>
+                            <span>PCB Design (EasyEDA)</span>
                             <span>80%</span>
                         </div>
-                        <div class="line js"></div>
+                        <div class="line pcb"></div>
                     </div>
                     <div class="bars">
                         <div class="info">
-                            <span>JS</span>
-                            <span>50%</span>
+                            <span>Python</span>
+                            <span>75%</span>
                         </div>
-                        <div class="line php"></div>
+                        <div class="line python"></div>
                     </div>
                     <div class="bars">
                         <div class="info">
@@ -144,14 +146,13 @@
         </div>
     </section>
 
-    <!-- contact section start -->
     <section class="contact" id="contact">
         <div class="max-width">
-            <h2 class="title">Contact me</h2>
+            <h2 class="title reveal">Get in Touch</h2>
             <div class="contact-content">
-                <div class="column left">
-                    <div class="text">Get in Touch</div>
-                    <p>For any queries, feel free to reach out to me through the following channels.</p>
+                <div class="column left reveal">
+                    <div class="text">Contact Info</div>
+                    <p>For queries, collaborations, or just a chat about tech.</p>
                     <div class="icons">
                         <div class="row">
                             <i class="fas fa-user"></i>
@@ -176,7 +177,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="column right">
+                <div class="column right reveal">
                     <div class="text">Message me</div>
                     <form action="#">
                         <div class="fields">
@@ -202,7 +203,6 @@
         </div>
     </section>
 
-    <!-- footer section start -->
     <footer>
         <span>Created By <a href="https://saimanpokhrel.com.np">Saiman Pokhrel</a> | <span class="far fa-copyright"></span> 2024 All rights reserved.</span>
     </footer>
