@@ -1,12 +1,38 @@
 $(document).ready(function(){
-    // --- 1. Navbar Sticky & Scroll Button Logic ---
+    
+    // --- 1. SYSTEM INITIALIZATION (Preloader) ---
+    setTimeout(function(){
+        $('.preloader').css('opacity', '0');
+        setTimeout(function(){
+            $('.preloader').css('display', 'none');
+            // Trigger entry animations here if needed
+        }, 500);
+    }, 3000); // 3 seconds fake load time
+
+    // --- 2. CUSTOM CURSOR LOGIC ---
+    var cursor = document.querySelector('.cursor');
+    var cursor2 = document.querySelector('.cursor2');
+    
+    document.addEventListener('mousemove', function(e){
+        cursor.style.cssText = cursor2.style.cssText = "left: " + e.clientX + "px; top: " + e.clientY + "px;";
+    });
+
+    // Add 'expand' class on hover over interactive elements
+    $('a, .card, .btn-neon, button, .menu-btn').hover(function(){
+        $('.cursor').addClass('expand');
+        $('.cursor2').addClass('expand');
+    }, function(){
+        $('.cursor').removeClass('expand');
+        $('.cursor2').removeClass('expand');
+    });
+
+    // --- 3. NAVBAR STICKY & SCROLL ---
     $(window).scroll(function(){
         if(this.scrollY > 20){
             $('.navbar').addClass("sticky");
         }else{
             $('.navbar').removeClass("sticky");
         }
-        
         if(this.scrollY > 500){
             $('.scroll-up-btn').addClass("show");
         }else{
@@ -14,161 +40,159 @@ $(document).ready(function(){
         }
     });
 
-    // --- 2. Smooth Scroll behavior ---
-    $('.scroll-up-btn').click(function(){
-        $('html').animate({scrollTop: 0});
-        $('html').css("scrollBehavior", "auto");
+    // --- 4. TYPING ANIMATION ---
+    var typed = new Typed(".typing", {
+        strings: ["IoT Engineer", "Firmware Developer", "PCB Designer", "Robotics Specialist"],
+        typeSpeed: 60,
+        backSpeed: 40,
+        loop: true
+    });
+    var typed2 = new Typed(".typing-2", {
+        strings: ["IoT Engineer", "Firmware Developer", "PCB Designer", "Robotics Specialist"],
+        typeSpeed: 60,
+        backSpeed: 40,
+        loop: true
     });
 
-    $('.navbar .menu li a').click(function(){
-        $('html').css("scrollBehavior", "smooth");
-    });
-
-    // --- 3. Toggle Menu ---
+    // --- 5. MOBILE MENU ---
     $('.menu-btn').click(function(){
         $('.navbar .menu').toggleClass("active");
         $('.menu-btn i').toggleClass("active");
     });
 
-    // --- 4. Typing Animation ---
-    var typed = new Typed(".typing", {
-        strings: ["IoT Engineer", "PCB Designer", "Robotics Enthusiast", "Developer"],
-        typeSpeed: 100,
-        backSpeed: 60,
-        loop: true
+    // --- 6. SMOOTH SCROLL ---
+    $('.scroll-up-btn').click(function(){
+        $('html').animate({scrollTop: 0});
+        $('html').css("scrollBehavior", "auto");
     });
-    
-    var typed2 = new Typed(".typing-2", {
-        strings: ["IoT Engineer", "PCB Designer", "Robotics Enthusiast", "Developer"],
-        typeSpeed: 100,
-        backSpeed: 60,
-        loop: true
+    $('.navbar .menu li a').click(function(){
+        $('html').css("scrollBehavior", "smooth");
     });
 
-    // --- 5. Owl Carousel ---
-    $('.carousel').owlCarousel({
-        margin: 20,
-        loop: true,
-        autoplay: true,
-        autoplayTimeOut: 2000,
-        autoplayHoverPause: true,
-        responsive: {
-            0:{ items: 1, nav: false },
-            600:{ items: 2, nav: false },
-            1000:{ items: 3, nav: false }
-        }
+    // Initialize VanillaTilt for cards
+    VanillaTilt.init(document.querySelectorAll(".card"), {
+        max: 25,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.5,
     });
-
-    // --- 6. SCROLL REVEAL ANIMATION (New Feature) ---
-    // Uses IntersectionObserver to check if elements are in view
-    const observerOptions = {
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
-        });
-    }, observerOptions);
-
-    const revealElements = document.querySelectorAll('.reveal');
-    revealElements.forEach(el => observer.observe(el));
 });
 
-// --- 7. PARTICLE NETWORK ANIMATION (New Feature: Pure JS) ---
-const canvas = document.getElementById("particle-canvas");
+
+/* --- 7. ADVANCED CIRCUIT BOARD ANIMATION (Canvas) --- */
+const canvas = document.getElementById("circuit-canvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let particlesArray;
+let circuits = [];
+const maxCircuits = 40; // Number of traces
 
-// Handle Resize
-window.addEventListener('resize', function(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    init();
-});
-
-// Particle Class
-class Particle {
-    constructor(x, y, directionX, directionY, size, color) {
-        this.x = x;
-        this.y = y;
-        this.directionX = directionX;
-        this.directionY = directionY;
-        this.size = size;
-        this.color = color;
+class Circuit {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.color = (Math.random() > 0.5) ? '#00f3ff' : '#bc13fe'; // Cyan or Purple
+        this.speedX = 0;
+        this.speedY = 0;
+        // Start moving in a random cardinal direction
+        this.pickDirection();
+        this.history = []; // Store path to draw trace
+        this.maxLength = Math.random() * 100 + 50;
+        this.life = 0;
     }
-    // Draw individual particle
+
+    pickDirection() {
+        const dirs = [
+            {x: 2, y: 0}, {x: -2, y: 0}, 
+            {x: 0, y: 2}, {x: 0, y: -2}
+        ];
+        const dir = dirs[Math.floor(Math.random() * dirs.length)];
+        this.speedX = dir.x;
+        this.speedY = dir.y;
+    }
+
+    update() {
+        // Change direction randomly or if hitting edge
+        if (Math.random() < 0.05 || this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+            this.pickDirection();
+        }
+
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life++;
+
+        // Add to history
+        this.history.push({x: this.x, y: this.y});
+
+        // Limit length of tail
+        if (this.history.length > this.maxLength) {
+            this.history.shift();
+        }
+        
+        // Reset if too old
+        if (this.life > 400) {
+            this.reset();
+        }
+    }
+
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.history = [];
+        this.life = 0;
+        this.pickDirection();
+    }
+
     draw() {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = '#dc143c'; // Crimson color matches theme
-        ctx.fill();
-    }
-    // Update particle position
-    update() {
-        if (this.x > canvas.width || this.x < 0) {
-            this.directionX = -this.directionX;
-        }
-        if (this.y > canvas.height || this.y < 0) {
-            this.directionY = -this.directionY;
-        }
-        this.x += this.directionX;
-        this.y += this.directionY;
-        this.draw();
-    }
-}
-
-// Create Particle Array
-function init() {
-    particlesArray = [];
-    let numberOfParticles = (canvas.height * canvas.width) / 9000; // Density
-    for (let i = 0; i < numberOfParticles; i++) {
-        let size = (Math.random() * 2) + 1;
-        let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-        let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-        let directionX = (Math.random() * 1) - 0.5;
-        let directionY = (Math.random() * 1) - 0.5;
-        let color = '#dc143c';
-        particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-    }
-}
-
-// Connect particles with lines
-function connect() {
-    let opacityValue = 1;
-    for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-            let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
-                           ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-            if (distance < (canvas.width/7) * (canvas.height/7)) {
-                opacityValue = 1 - (distance/20000);
-                ctx.strokeStyle = 'rgba(220, 20, 60,' + opacityValue + ')';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                ctx.stroke();
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = this.size;
+        ctx.lineJoin = 'round';
+        
+        if (this.history.length > 0) {
+            ctx.moveTo(this.history[0].x, this.history[0].y);
+            for (let i = 1; i < this.history.length; i++) {
+                ctx.lineTo(this.history[i].x, this.history[i].y);
             }
         }
+        ctx.stroke();
+
+        // Draw head (node)
+        ctx.beginPath();
+        ctx.fillStyle = '#fff';
+        ctx.arc(this.x, this.y, this.size + 1, 0, Math.PI * 2);
+        ctx.fill();
     }
 }
 
-// Animation Loop
-function animate() {
-    requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
+function initCircuits() {
+    circuits = [];
+    for (let i = 0; i < maxCircuits; i++) {
+        circuits.push(new Circuit());
     }
-    connect();
 }
 
-// Start Animation
-init();
-animate();
+function animateCircuits() {
+    // Fade effect for trails
+    ctx.fillStyle = 'rgba(5, 5, 5, 0.1)'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < circuits.length; i++) {
+        circuits[i].update();
+        circuits[i].draw();
+    }
+    requestAnimationFrame(animateCircuits);
+}
+
+// Handle Resize
+window.addEventListener('resize', function() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initCircuits();
+});
+
+initCircuits();
+animateCircuits();
